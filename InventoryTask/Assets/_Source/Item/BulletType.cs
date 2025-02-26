@@ -1,5 +1,5 @@
 ﻿public enum BulletType
 {
-    Pistol,
-    Ak
+    Pistol = 0,
+    Ak = 1
 }
