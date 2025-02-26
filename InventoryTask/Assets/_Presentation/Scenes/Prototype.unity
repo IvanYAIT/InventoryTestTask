@@ -5013,15 +5013,7 @@ MonoBehaviour:
   addBulletBtn: {fileID: 604115269}
   addEquipmentBtn: {fileID: 320750779}
   removeItemBtn: {fileID: 82208007}
-  items:
-  - {fileID: 11400000, guid: 41798edc826d8f54786f1b20bff93adc, type: 2}
-  - {fileID: 11400000, guid: ec0bd58edfc1af64181b8c635f299adc, type: 2}
-  - {fileID: 11400000, guid: 01d2410077fa2664ca6ca0fd5e7e90a0, type: 2}
-  - {fileID: 11400000, guid: 036799ed3759b7e4ba6684b870be22b2, type: 2}
-  - {fileID: 11400000, guid: 8e287a2e1e578034f8d97452c05a46fb, type: 2}
-  - {fileID: 11400000, guid: acfffc0372c121c46b3d402653124a49, type: 2}
-  - {fileID: 11400000, guid: 91d7def076606ea43bc0a4c8fbdbe595, type: 2}
-  - {fileID: 11400000, guid: a68d30ad9c7796b408b601d3bb9db03f, type: 2}
+  items: []
 --- !u!4 &1830080111
 Transform:
   m_ObjectHideFlags: 0
