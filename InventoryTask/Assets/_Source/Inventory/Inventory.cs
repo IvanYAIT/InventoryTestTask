@@ -8,22 +8,24 @@ public class Inventory : IInventory
 {
     private Dictionary<ISlot, AItem> _data;
     private InventoryView _view;
-    private AItem[] loadedItems;
+    private List<SerializableData> loadedItems;
 
     [Inject]
     public Inventory(InventoryView view)
     {
         _view = view;
-        //loadedItems = JsonInventorySaver.Load();
-        //if (loadedItems == null)
-        //{
-        //    _data = new Dictionary<ISlot, AItem>();
-        //    Init(view.Slots);
-        //}
-        //else
-        //    ShowLoadedData();
+        loadedItems = JsonInventorySaver.Load();
         _data = new Dictionary<ISlot, AItem>();
-        Init(view.Slots);
+        if (loadedItems == null)
+        {
+            Init(view.Slots);
+        }
+        else
+        {
+            ShowLoadedData(view.Slots);
+        }
+        //_data = new Dictionary<ISlot, AItem>();
+        //Init(view.Slots);
     }
 
     private void Init(ISlot[] slots)
@@ -36,12 +38,21 @@ public class Inventory : IInventory
         Debug.Log("init");
     }
 
-    private void ShowLoadedData()
+    private void ShowLoadedData(ISlot[] slots)
     {
         int counter = 0;
-        foreach (ISlot slot in _data.Keys)
+        foreach (ISlot slot in slots)
         {
-            _data[slot] = loadedItems[counter];
+            Debug.Log(loadedItems[counter]);
+            if (loadedItems[counter] != null)
+            {
+                AItem item = ScriptableObject.Instantiate(Resources.Load<AItem>("Items/" + loadedItems[counter].itemType));
+                item.SetAmount(loadedItems[counter].amount);
+                _data.Add(slot, item);
+            }
+            else
+                _data.Add(slot, null);
+
             _view.ShowItem(slot, _data[slot]);
             counter++;
         }
@@ -56,7 +67,7 @@ public class Inventory : IInventory
         {
             int remains = _data[newSlot].Add(amount);
             _view.ShowItem(newSlot, _data[newSlot]);
-            //JsonInventorySaver.Save(_data.Values.ToArray());
+            JsonInventorySaver.Save(_data.Values.ToArray());
             if (remains < 0)
                 return true;
             else
@@ -72,7 +83,7 @@ public class Inventory : IInventory
             _data[newSlot] = newItem;
             _data[newSlot].SetAmount(amount);
             _view.ShowItem(newSlot, _data[newSlot]);
-            //JsonInventorySaver.Save(_data.Values.ToArray());
+            JsonInventorySaver.Save(_data.Values.ToArray());
 
             return true;
         }
@@ -87,7 +98,7 @@ public class Inventory : IInventory
         {
             int remains = _data[newSlot].Subtract(amount);
             _view.ShowItem(newSlot, _data[newSlot]);
-            //JsonInventorySaver.Save(_data.Values.ToArray());
+            JsonInventorySaver.Save(_data.Values.ToArray());
 
             if (remains < 0)
             {
@@ -97,7 +108,7 @@ public class Inventory : IInventory
             {
                 _data[newSlot] = null;
                 _view.ShowItem(newSlot, _data[newSlot]);
-                //JsonInventorySaver.Save(_data.Values.ToArray());
+                JsonInventorySaver.Save(_data.Values.ToArray());
 
                 if (remains > 0)
                     return RemoveItem(item, remains);
@@ -118,13 +129,13 @@ public class Inventory : IInventory
             int remains = _data[slot].Subtract(amount);
             Debug.Log(remains);
             _view.ShowItem(slot, _data[slot]);
-            //JsonInventorySaver.Save(_data.Values.ToArray());
+            JsonInventorySaver.Save(_data.Values.ToArray());
 
             if (remains > 0)
             {
                 _data[slot] = null;
                 _view.ShowItem(slot, _data[slot]);
-                //JsonInventorySaver.Save(_data.Values.ToArray());
+                JsonInventorySaver.Save(_data.Values.ToArray());
 
                 return true;
             }
@@ -141,8 +152,7 @@ public class Inventory : IInventory
         {
             _data[slot] = null;
             _view.ShowItem(slot, _data[slot]);
-            //JsonInventorySaver.Save(_data.Values.ToArray());
-
+            JsonInventorySaver.Save(_data.Values.ToArray());
         }
     }
 
