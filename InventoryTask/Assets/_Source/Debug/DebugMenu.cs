@@ -41,6 +41,7 @@ public class DebugMenu
 
     private void AddEquipment()
     {
+
         List<AWeapon> weapons = new List<AWeapon>();
         List<AArmor> head = new List<AArmor>();
         List<AArmor> body = new List<AArmor>();
@@ -75,6 +76,7 @@ public class DebugMenu
 
     private void Shoot()
     {
+
         ISlot[] bullets = _inventory.FindAllItemSlotsByType<ABullet>();
         if (bullets != null)
             _inventory.RemoveItemFromSlot(bullets[Random.Range(0, bullets.Length)], 1);
@@ -84,6 +86,7 @@ public class DebugMenu
 
     private void RemoveRandomItem()
     {
+
         try
         {
             AItem randomItem = _inventory.GetRandomItem();

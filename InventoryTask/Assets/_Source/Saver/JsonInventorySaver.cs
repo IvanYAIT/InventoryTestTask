@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class JsonInventorySaver
@@ -67,7 +67,6 @@ public class JsonInventorySaver
             data.Add(new SlotSerializableData(slot.IsLocked(), slot.GetCost()));
         }
         string json = JsonConvert.SerializeObject(data, Formatting.Indented);
-        Debug.Log(json);
         File.WriteAllText(FILE_PATH_SLOTS, json);
     }
 
