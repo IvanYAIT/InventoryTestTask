@@ -15,7 +15,7 @@ public class Slot : MonoBehaviour, ISlot
     {
         lockBtn.gameObject.SetActive(locked);
         costText.text = $"Unlock for {costToUnlock}";
-        lockBtn.onClick.AddListener(Unlock);
+        lockBtn.onClick.AddListener(delegate { Unlock(true); });
     }
 
     private void Update()
@@ -28,6 +28,10 @@ public class Slot : MonoBehaviour, ISlot
 
     public bool IsLocked() => locked;
 
+    public Button LockBtn => lockBtn;
+
+    public int GetCost() => costToUnlock;
+    public void SetCost(int value) => costToUnlock = value;
 
     public void ShowIcon(Sprite icon)=>
         iconImg.sprite = icon;
@@ -43,10 +47,20 @@ public class Slot : MonoBehaviour, ISlot
         }
     }
 
-    public void Unlock()
+    public void Unlock(bool unlocked)
     {
-        Balance.Instance.Amount -= costToUnlock;
-        locked = false;
-        lockBtn.gameObject.SetActive(locked);
+        if (unlocked)
+        {
+            Balance.Instance.Amount -= costToUnlock;
+            JsonInventorySaver.SaveBalance();
+            locked = false;
+            lockBtn.gameObject.SetActive(locked);
+        }
+        else
+        {
+            locked = true;
+            lockBtn.gameObject.SetActive(locked);
+            costText.text = $"Unlock for {costToUnlock}";
+        }
     }
 }
